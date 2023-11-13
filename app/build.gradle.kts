@@ -21,7 +21,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "MAP_BOX_PUBLIC_API_KEY",  "\"${project.findProperty("mapbox_public_api_key")}\"")
+            buildConfigField("String", "MAP_BOX_SECRET_API_KEY", "\"${project.findProperty("mapbox_secret_api_key")}\"")
+        }
         release {
+            buildConfigField("String", "MAP_BOX_PUBLIC_API_KEY",  "\"${project.findProperty("mapbox_public_api_key")}\"")
+            buildConfigField("String", "MAP_BOX_SECRET_API_KEY", "\"${project.findProperty("mapbox_secret_api_key")}\"")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
@@ -35,6 +41,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
