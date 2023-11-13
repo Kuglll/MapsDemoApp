@@ -4,62 +4,44 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mapsdemoapp.R
+import com.example.mapsdemoapp.ui.shared.base.BaseComposable
 import com.mapbox.geojson.Point
-import com.mapbox.maps.Style
 
 @Composable
 fun MapScreen(
     viewModel: MapViewModel = viewModel(),
 ) {
-
-    val state = viewModel.state.collectAsStateWithLifecycle().value
-
     val startingPoint = remember { Point.fromLngLat(14.5, 46.0) }
 
-    var currentMapStyle by remember {
-        mutableStateOf(Style.OUTDOORS)
-    }
-
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter,
-    ) {
-        MapComponent(
-            mapStartingPoint = startingPoint,
-            currentMapStyle = currentMapStyle,
-            onLongPress = viewModel::onLongPress,
-            savedLocations = state.locations,
-        )
-        Button(
-            onClick = {
-                when (currentMapStyle) {
-                    Style.OUTDOORS -> {
-                        currentMapStyle = Style.SATELLITE_STREETS
-                    }
-
-                    Style.SATELLITE_STREETS -> {
-                        currentMapStyle = Style.OUTDOORS
-                    }
-                }
-            },
-            modifier = Modifier.padding(bottom = 16.dp),
-            shape = RoundedCornerShape(5.dp),
+    BaseComposable(viewModel = viewModel) { mapState ->
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter,
         ) {
-            Text(stringResource(id = R.string.toggle_map_type))
+            MapComponent(
+                mapStartingPoint = startingPoint,
+                currentMapStyle = mapState.currentMapStyle,
+                onLongPress = viewModel::onLongPress,
+                savedLocations = mapState.savedLocations,
+            )
+            Button(
+                onClick = viewModel::onToggleMapTypeClicked,
+                modifier = Modifier.padding(bottom = 16.dp),
+                shape = RoundedCornerShape(5.dp),
+            ) {
+                Text(stringResource(id = R.string.toggle_map_type))
+            }
         }
     }
+
 }

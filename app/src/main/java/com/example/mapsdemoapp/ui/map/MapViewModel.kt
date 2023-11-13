@@ -1,41 +1,45 @@
 package com.example.mapsdemoapp.ui.map
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.mapsdemoapp.domain.location.models.Location
 import com.example.mapsdemoapp.repositories.LocationRepository
+import com.example.mapsdemoapp.ui.shared.base.BaseViewModel
 import com.mapbox.geojson.Point
+import com.mapbox.maps.Style
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-
-data class MapState(
-    val locations: List<Location> = emptyList()
-)
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
-) : ViewModel() {
-
-    val state: StateFlow<MapState> get() = stateFlow.asStateFlow()
-    private val stateFlow: MutableStateFlow<MapState> by lazy { MutableStateFlow(MapState()) }
+) : BaseViewModel<MapState, Nothing>(MapState()) {
 
     init {
-        viewModelScope.launch {
-            stateFlow.update {
-                it.copy(locations = locationRepository.getLocations())
+        launchWithLoading {
+            val savedLocations = locationRepository.getLocations()
+            updateState { state ->
+                state.copy(savedLocations = savedLocations)
             }
         }
     }
 
-    fun onLongPress(point: Point){
-        viewModelScope.launch {//TODO: Create base viewmodel
+    fun onLongPress(point: Point) {
+        launchWithLoading {
             locationRepository.storeLocation(point.toLocation())
+        }
+    }
+
+    fun onToggleMapTypeClicked() {
+        when (state.value.currentMapStyle) {
+            Style.OUTDOORS -> {
+                updateState { state ->
+                    state.copy(currentMapStyle = Style.SATELLITE_STREETS)
+                }
+            }
+            Style.SATELLITE_STREETS -> {
+                updateState { state ->
+                    state.copy(currentMapStyle = Style.OUTDOORS)
+                }
+            }
         }
     }
 

@@ -2,4 +2,6 @@
     <string name="app_name">MapsDemoApp</string>
     <string name="mapbox_access_token">pk.eyJ1Ijoia3VnbCIsImEiOiJjbG94MnhiNWIxYnlyMmpxMDF1Z2o5cXBrIn0.hnqAwygOzi9w38udALDaZw</string>
     <string name="toggle_map_type">Toggle map type</string>
+    <string name='error'>Error</string>
+    <string name="ok">Ok</string>
 </resources>
