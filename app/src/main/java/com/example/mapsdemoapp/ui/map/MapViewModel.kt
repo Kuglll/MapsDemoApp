@@ -14,17 +14,22 @@ class MapViewModel @Inject constructor(
 ) : BaseViewModel<MapState, Nothing>(MapState()) {
 
     init {
-        launchWithLoading {
-            val savedLocations = locationRepository.getLocations()
-            updateState { state ->
-                state.copy(savedLocations = savedLocations)
-            }
-        }
+        refreshSavedLocations()
     }
 
     fun onLongPress(point: Point) {
         launchWithLoading {
             locationRepository.storeLocation(point.toLocation())
+            refreshSavedLocations()
+        }
+    }
+
+    private fun refreshSavedLocations(){
+        launchWithLoading {
+            val savedLocations = locationRepository.getLocations()
+            updateState { state ->
+                state.copy(savedLocations = savedLocations)
+            }
         }
     }
 
