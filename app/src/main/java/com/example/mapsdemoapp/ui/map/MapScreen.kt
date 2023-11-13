@@ -15,12 +15,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mapsdemoapp.R
 import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
 
 @Composable
-fun MapScreen() {
+fun MapScreen(
+    viewModel: MapViewModel = viewModel(),
+) {
+
+    val state = viewModel.state.collectAsStateWithLifecycle().value
 
     val startingPoint = remember { Point.fromLngLat(14.5, 46.0) }
 
@@ -33,8 +39,10 @@ fun MapScreen() {
         contentAlignment = Alignment.BottomCenter,
     ) {
         MapComponent(
-            point = startingPoint,
+            mapStartingPoint = startingPoint,
             currentMapStyle = currentMapStyle,
+            onLongPress = viewModel::onLongPress,
+            savedLocations = state.locations,
         )
         Button(
             onClick = {
