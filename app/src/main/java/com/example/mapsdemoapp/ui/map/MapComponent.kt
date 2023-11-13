@@ -16,6 +16,7 @@ import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.annotation.annotations
+import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
@@ -44,6 +45,13 @@ fun MapComponent(
         }
     }
 
+    val markerClickListener: OnPointAnnotationClickListener = remember {
+        OnPointAnnotationClickListener {
+            //TODO: Navigate to the next screen
+            return@OnPointAnnotationClickListener true
+        }
+    }
+
     AndroidView(
         factory = {
             MapView(it).also { mapView ->
@@ -51,7 +59,9 @@ fun MapComponent(
                     loadStyleUri(Style.TRAFFIC_DAY)
                     flyTo(CameraOptions.Builder().zoom(9.0).center(point).build())
                 }
-                pointAnnotationManager = mapView.annotations.createPointAnnotationManager()
+                pointAnnotationManager = mapView.annotations.createPointAnnotationManager().apply {
+                    addClickListener(markerClickListener)
+                }
                 mapView.gestures.addOnMapLongClickListener(mapLongClickListener)
             }
         },
@@ -62,6 +72,7 @@ fun MapComponent(
         },
         onRelease = { mapView ->
             mapView.gestures.removeOnMapLongClickListener(mapLongClickListener)
+            pointAnnotationManager?.removeClickListener(markerClickListener)
         },
         modifier = modifier,
     )
