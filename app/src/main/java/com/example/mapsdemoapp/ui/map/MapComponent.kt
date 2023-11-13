@@ -26,6 +26,7 @@ import com.mapbox.maps.plugin.gestures.gestures
 fun MapComponent(
     modifier: Modifier = Modifier,
     point: Point?,
+    currentMapStyle: String = Style.OUTDOORS,
 ) {
     val context = LocalContext.current
     var pointAnnotationManager: PointAnnotationManager? by remember {
@@ -52,6 +53,11 @@ fun MapComponent(
                 }
                 pointAnnotationManager = mapView.annotations.createPointAnnotationManager()
                 mapView.gestures.addOnMapLongClickListener(mapLongClickListener)
+            }
+        },
+        update = { mapView ->
+            mapView.getMapboxMap().apply {
+                loadStyleUri(currentMapStyle)
             }
         },
         onRelease = { mapView ->
