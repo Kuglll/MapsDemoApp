@@ -5,13 +5,14 @@ import com.example.mapsdemoapp.domain.location.models.Location
 import com.example.mapsdemoapp.domain.location.toLocation
 import com.example.mapsdemoapp.domain.location.toLocationEntity
 import javax.inject.Inject
-
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 interface LocationRepository {
 
     suspend fun storeLocation(location: Location)
 
-    suspend fun getLocations(): List<Location>
+    fun getLocations(): Flow<List<Location>>
 
 }
 
@@ -23,9 +24,11 @@ class LocationRepositoryImpl @Inject constructor(
         locationDao.insertLocation(location.toLocationEntity())
     }
 
-    override suspend fun getLocations(): List<Location> =
-        locationDao.getAllLocations().map {
-            it.toLocation()
+    override fun getLocations(): Flow<List<Location>> =
+        locationDao.getAllLocations().map { locations ->
+            locations.map { locationEntity ->
+                locationEntity.toLocation()
+            }
         }
 
 }

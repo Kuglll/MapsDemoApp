@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.mapsdemoapp.domain.location.models.LocationEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LocationDao {
@@ -12,6 +13,6 @@ interface LocationDao {
     suspend fun insertLocation(location: LocationEntity)
 
     @Query("SELECT * FROM locations")
-    suspend fun getAllLocations(): List<LocationEntity> //TODO: Return flow
+    fun getAllLocations(): Flow<List<LocationEntity>>
 
 }
