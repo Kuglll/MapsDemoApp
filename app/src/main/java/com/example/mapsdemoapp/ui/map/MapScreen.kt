@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -17,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mapsdemoapp.R
 import com.example.mapsdemoapp.ui.shared.base.BaseComposable
-import com.example.mapsdemoapp.ui.theme.dark_green
 import com.mapbox.geojson.Point
 
 @Composable
@@ -43,7 +41,6 @@ fun MapScreen(
                 onClick = viewModel::onToggleMapTypeClicked,
                 modifier = Modifier.padding(bottom = 16.dp),
                 shape = RoundedCornerShape(5.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = dark_green),
                 elevation = null,
             ) {
                 Text(
