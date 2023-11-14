@@ -20,11 +20,21 @@ import com.mapbox.geojson.Point
 
 @Composable
 fun MapScreen(
+    onNavigateToForecast: (Int) -> Unit,
     viewModel: MapViewModel = hiltViewModel(),
 ) {
     val startingPoint = remember { Point.fromLngLat(14.5, 46.0) }
 
-    BaseComposable(viewModel = viewModel) { mapState ->
+    BaseComposable(
+        viewModel = viewModel,
+        eventsHandler = { event ->
+            when(event){
+                is MapEvent.LocationIdRetrievedSuccessfully -> {
+                    onNavigateToForecast(event.locationId)
+                }
+            }
+        }
+    ) { mapState ->
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter,

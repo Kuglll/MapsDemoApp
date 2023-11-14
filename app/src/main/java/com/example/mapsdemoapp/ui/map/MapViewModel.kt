@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.map
 class MapViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
     private val nominatimService: NominatimService,
-) : BaseViewModel<MapState, Nothing>(MapState()) {
+) : BaseViewModel<MapState, MapEvent>(MapState()) {
 
     init {
         locationRepository.getLocations().map {
@@ -46,11 +46,19 @@ class MapViewModel @Inject constructor(
                     state.copy(currentMapStyle = Style.SATELLITE_STREETS)
                 }
             }
+
             Style.SATELLITE_STREETS -> {
                 updateState { state ->
                     state.copy(currentMapStyle = Style.OUTDOORS)
                 }
             }
+        }
+    }
+
+    fun onMarkerClicked(point: Point) {
+        launchWithLoading {
+            val locationId = locationRepository.getLocationIdByLatAndLng(point.toLocation())
+            postEvent(MapEvent.LocationIdRetrievedSuccessfully(locationId = locationId))
         }
     }
 
