@@ -17,3 +17,11 @@ fun LocationEntity.toLocation() = Location(
     locationName = this.locationName,
 )
 
+fun LocationEntity.toLocationWithUpdatedLocationName(
+    updatedLocationName: String,
+) = Location(
+    id = this.id,
+    latitude = this.latitude,
+    longitude = this.longitude,
+    locationName = updatedLocationName,
+)

@@ -9,7 +9,7 @@ data class Place(
 
 data class Address(
     @SerializedName("village")
-    val village: String,
+    val village: String = "",
     @SerializedName("city")
-    val city: String,
+    val city: String = "",
 )

@@ -26,49 +26,52 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mapsdemoapp.R
+import com.example.mapsdemoapp.ui.shared.base.BaseComposable
 
 @Composable
 fun ForecastScreen(
     viewModel: ForecastViewModel = hiltViewModel(),
     onBackButtonClicked: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        TopAppBar {
-            TextButton(
-                modifier = Modifier.padding(start = 8.dp),
-                onClick = onBackButtonClicked,
+    BaseComposable(viewModel = viewModel) { state ->
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            TopAppBar {
+                TextButton(
+                    modifier = Modifier.padding(start = 8.dp),
+                    onClick = onBackButtonClicked,
+                ) {
+                    Text(
+                        text = stringResource(R.string.back),
+                        style = MaterialTheme.typography.h6,
+                        color = MaterialTheme.colors.onPrimary,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+            }
+            Column(
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.back),
-                    style = MaterialTheme.typography.h6,
-                    color = MaterialTheme.colors.onPrimary,
+                    text = state.locationName,
+                    style = MaterialTheme.typography.h4,
+                    color = MaterialTheme.colors.primary,
                     fontWeight = FontWeight.Bold,
                 )
+                Text(text = "14.482543, 46.036905")
+                Spacer(modifier = Modifier.height(16.dp))
+                WeatherCard(
+                    currentTemperature = "11°",
+                    minTemperature = "4°",
+                    maxTemperature = "13°",
+                    precipitation = "3.16 mm/h",
+                    airPressure = "1015 hPa",
+                    humidity = "65%",
+                    windSpeed = "13 m/s",
+                    lastFetchedInfo = "Last fetched: 14:25 13.11.2023",
+                )
             }
-        }
-        Column(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp)
-        ) {
-            Text(
-                text = "Ljubljana",
-                style = MaterialTheme.typography.h4,
-                color = MaterialTheme.colors.primary,
-                fontWeight = FontWeight.Bold,
-            )
-            Text(text = "14.482543, 46.036905")
-            Spacer(modifier = Modifier.height(16.dp))
-            WeatherCard(
-                currentTemperature = "11°",
-                minTemperature = "4°",
-                maxTemperature = "13°",
-                precipitation = "3.16 mm/h",
-                airPressure = "1015 hPa",
-                humidity = "65%",
-                windSpeed = "13 m/s",
-                lastFetchedInfo = "Last fetched: 14:25 13.11.2023",
-            )
         }
     }
 }

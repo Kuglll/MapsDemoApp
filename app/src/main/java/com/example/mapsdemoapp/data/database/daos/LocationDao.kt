@@ -20,6 +20,9 @@ interface LocationDao {
     fun getAllLocations(): Flow<List<LocationEntity>>
 
     @Query("SELECT id FROM locations WHERE latitude=:latitude AND longitude=:longitude")
-    fun getLocationIdByLatAndLng(latitude: Double, longitude: Double): Int
+    fun getLocationIdByLatAndLng(latitude: Double, longitude: Double): Flow<Int>
+
+    @Query("SELECT * FROM locations WHERE id=:id")
+    fun getLocationById(id: Int): Flow<LocationEntity>
 
 }

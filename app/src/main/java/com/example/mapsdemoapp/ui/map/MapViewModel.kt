@@ -1,8 +1,6 @@
 package com.example.mapsdemoapp.ui.map
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.example.mapsdemoapp.data.network.NominatimService
 import com.example.mapsdemoapp.domain.location.models.Location
 import com.example.mapsdemoapp.repositories.LocationRepository
 import com.example.mapsdemoapp.ui.shared.base.BaseViewModel
@@ -10,13 +8,13 @@ import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
-    private val nominatimService: NominatimService,
 ) : BaseViewModel<MapState, MapEvent>(MapState()) {
 
     init {
@@ -30,11 +28,6 @@ class MapViewModel @Inject constructor(
     fun onLongPress(point: Point) {
         launchWithLoading {
             locationRepository.storeLocation(point.toLocation())
-            val place = nominatimService.getLocationNameByLatAndLng(
-                latitude = point.latitude(),
-                longitude = point.longitude(),
-            )
-            Log.d("Place", "City: ${place?.address?.city}, village: ${place?.address?.village}")
         }
     }
 
@@ -57,7 +50,7 @@ class MapViewModel @Inject constructor(
 
     fun onMarkerClicked(point: Point) {
         launchWithLoading {
-            val locationId = locationRepository.getLocationIdByLatAndLng(point.toLocation())
+            val locationId = locationRepository.getLocationIdByLatAndLng(point.toLocation()).first()
             postEvent(MapEvent.LocationIdRetrievedSuccessfully(locationId = locationId))
         }
     }
