@@ -12,6 +12,8 @@ interface LocationRepository {
 
     suspend fun storeLocation(location: Location)
 
+    suspend fun updateLocation(location: Location)
+
     fun getLocations(): Flow<List<Location>>
 
 }
@@ -22,6 +24,10 @@ class LocationRepositoryImpl @Inject constructor(
 
     override suspend fun storeLocation(location: Location) {
         locationDao.insertLocation(location.toLocationEntity())
+    }
+
+    override suspend fun updateLocation(location: Location) {
+        locationDao.updateLocation(location.toLocationEntity())
     }
 
     override fun getLocations(): Flow<List<Location>> =
