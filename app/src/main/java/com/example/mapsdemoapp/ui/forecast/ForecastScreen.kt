@@ -102,6 +102,7 @@ fun WeatherCard(
                         fontWeight = FontWeight.ExtraBold,
                     )
                     Spacer(modifier = Modifier.height(16.dp))
+                    //TODO Handle icons
                     Image(
                         painter = painterResource(id = R.drawable.ic_marker_blue),
                         contentDescription = stringResource(id = R.string.weather_image_content_description),
