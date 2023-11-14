@@ -67,7 +67,7 @@ fun MapComponent(
                 savedLocations.map { location ->
                     PointAnnotationOptions()
                         .withPoint(Point.fromLngLat(location.longitude, location.latitude))
-                        .withIconImage(R.drawable.ic_marker_blue.toBitmap(context))
+                        .withIconImage(R.drawable.ic_marker_blue.toBitmap(context)) //TODO: Replace marker with green circle
                 }
             )
         },
