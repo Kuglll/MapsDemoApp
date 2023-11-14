@@ -20,7 +20,6 @@ import com.mapbox.geojson.Point
 
 @Composable
 fun MapScreen(
-    onMarkerClicked: () -> Unit,
     viewModel: MapViewModel = hiltViewModel(),
 ) {
     val startingPoint = remember { Point.fromLngLat(14.5, 46.0) }
@@ -35,7 +34,7 @@ fun MapScreen(
                 currentMapStyle = mapState.currentMapStyle,
                 onLongPress = viewModel::onLongPress,
                 savedLocations = mapState.savedLocations,
-                onMarkerClicked = onMarkerClicked,
+                onMarkerClicked = viewModel::onMarkerClicked,
             )
             Button(
                 onClick = viewModel::onToggleMapTypeClicked,

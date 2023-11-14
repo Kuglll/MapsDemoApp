@@ -29,7 +29,7 @@ fun MapComponent(
     currentMapStyle: String,
     savedLocations: List<Location>,
     onLongPress: (Point) -> Unit,
-    onMarkerClicked: () -> Unit,
+    onMarkerClicked: (Point) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -46,7 +46,7 @@ fun MapComponent(
 
     val markerClickListener: OnPointAnnotationClickListener = remember {
         OnPointAnnotationClickListener {
-            onMarkerClicked()
+            onMarkerClicked(it.point)
             return@OnPointAnnotationClickListener true
         }
     }
