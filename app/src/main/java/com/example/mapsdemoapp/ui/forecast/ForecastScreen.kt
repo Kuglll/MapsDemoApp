@@ -74,7 +74,7 @@ fun ForecastScreen(
 }
 
 @Composable
-fun WeatherCard(
+private fun WeatherCard(
     currentTemperature: String,
     minTemperature: String,
     maxTemperature: String,
@@ -147,7 +147,7 @@ fun WeatherCard(
 }
 
 @Composable
-fun WeatherInfoComponent(
+private fun WeatherInfoComponent(
     @StringRes titleId: Int,
     value: String,
 ) {
