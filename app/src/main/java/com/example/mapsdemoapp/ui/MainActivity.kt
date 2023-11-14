@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import com.example.mapsdemoapp.ui.shared.Navigation
 import com.example.mapsdemoapp.ui.theme.Colors
+import com.example.mapsdemoapp.ui.theme.shapes
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -16,6 +17,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MaterialTheme(
                 colors = Colors,
+                shapes = shapes,
             ){
                 Navigation()
             }

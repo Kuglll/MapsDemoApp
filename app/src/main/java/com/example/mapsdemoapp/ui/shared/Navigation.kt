@@ -29,7 +29,11 @@ fun Navigation() {
         }
 
         composable(route = Screen.ForecastScreen.route){
-            ForecastScreen()
+            ForecastScreen(
+                onBackButtonClicked = {
+                    navController.popBackStack()
+                },
+            )
         }
 
     }
