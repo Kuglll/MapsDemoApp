@@ -14,7 +14,6 @@ import com.example.mapsdemoapp.utils.extensions.toBitmap
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
-import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
@@ -54,10 +53,7 @@ fun MapComponent(
     AndroidView(
         factory = {
             MapView(it).also { mapView ->
-                mapView.getMapboxMap().apply {
-                    loadStyleUri(Style.TRAFFIC_DAY)
-                    flyTo(CameraOptions.Builder().zoom(9.0).center(mapStartingPoint).build())
-                }
+                mapView.getMapboxMap().flyTo(CameraOptions.Builder().zoom(9.0).center(mapStartingPoint).build())
                 pointAnnotationManager = mapView.annotations.createPointAnnotationManager().apply {
                     addClickListener(markerClickListener)
                 }
@@ -65,15 +61,14 @@ fun MapComponent(
             }
         },
         update = { mapView ->
-            mapView.getMapboxMap().apply {
-                loadStyleUri(currentMapStyle)
-            }
-            savedLocations.forEach { location ->
-                val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
-                    .withPoint(Point.fromLngLat(location.longitude, location.latitude))
-                    .withIconImage(R.drawable.ic_marker_blue.toBitmap(context))
-                pointAnnotationManager?.create(pointAnnotationOptions)
-            }
+            mapView.getMapboxMap().loadStyleUri(currentMapStyle)
+            pointAnnotationManager?.create(
+                savedLocations.map { location ->
+                    PointAnnotationOptions()
+                        .withPoint(Point.fromLngLat(location.longitude, location.latitude))
+                        .withIconImage(R.drawable.ic_marker_blue.toBitmap(context))
+                }
+            )
         },
         onRelease = { mapView ->
             mapView.gestures.removeOnMapLongClickListener(mapLongClickListener)
