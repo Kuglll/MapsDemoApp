@@ -3,7 +3,7 @@ package com.example.mapsdemoapp.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.mapsdemoapp.ui.map.MapScreen
+import com.example.mapsdemoapp.ui.shared.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MapScreen()
+            Navigation()
         }
     }
 }

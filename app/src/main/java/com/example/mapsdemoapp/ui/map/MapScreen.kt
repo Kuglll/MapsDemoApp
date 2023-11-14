@@ -12,14 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mapsdemoapp.R
 import com.example.mapsdemoapp.ui.shared.base.BaseComposable
 import com.mapbox.geojson.Point
 
 @Composable
 fun MapScreen(
-    viewModel: MapViewModel = viewModel(),
+    onMarkerClicked: () -> Unit,
+    viewModel: MapViewModel = hiltViewModel(),
 ) {
     val startingPoint = remember { Point.fromLngLat(14.5, 46.0) }
 
@@ -33,6 +34,7 @@ fun MapScreen(
                 currentMapStyle = mapState.currentMapStyle,
                 onLongPress = viewModel::onLongPress,
                 savedLocations = mapState.savedLocations,
+                onMarkerClicked = onMarkerClicked,
             )
             Button(
                 onClick = viewModel::onToggleMapTypeClicked,

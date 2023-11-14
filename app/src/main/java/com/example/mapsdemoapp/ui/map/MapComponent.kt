@@ -27,8 +27,9 @@ import com.mapbox.maps.plugin.gestures.gestures
 fun MapComponent(
     mapStartingPoint: Point,
     currentMapStyle: String,
-    onLongPress: (Point) -> Unit,
     savedLocations: List<Location>,
+    onLongPress: (Point) -> Unit,
+    onMarkerClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -45,7 +46,7 @@ fun MapComponent(
 
     val markerClickListener: OnPointAnnotationClickListener = remember {
         OnPointAnnotationClickListener {
-            //TODO: Navigate to the next screen
+            onMarkerClicked()
             return@OnPointAnnotationClickListener true
         }
     }
