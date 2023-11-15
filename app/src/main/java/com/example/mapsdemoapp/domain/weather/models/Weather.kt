@@ -1,9 +1,6 @@
-package com.example.mapsdemoapp.ui.forecast
+package com.example.mapsdemoapp.domain.weather.models
 
-data class ForecastState(
-    val locationName: String = "",
-    val latutide: Double, //TODO: Round this to 6 decimals
-    val longitude: Double,
+data class Weather(
     val temperature: Int,
     val minTemperature: Int,
     val maxTemperature: Int,

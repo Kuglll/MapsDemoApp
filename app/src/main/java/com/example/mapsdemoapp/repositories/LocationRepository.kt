@@ -11,7 +11,6 @@ import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
@@ -52,13 +51,14 @@ class LocationRepositoryImpl @Inject constructor(
         return locationDao.getLocationById(id).flatMapConcat { location ->
             if (location.locationName.isNullOrEmpty()) {
                 fetchAndStoreLocationName(location)
+                flowOf()
             } else {
                 flowOf(location.toLocation())
             }
         }
     }
 
-    private fun fetchAndStoreLocationName(location: LocationEntity): Flow<Location> = flow {
+    private suspend fun fetchAndStoreLocationName(location: LocationEntity) {
         val locationName = fetchLocationName(location.latitude, location.longitude)
         val updatedLocation = location.toLocationWithUpdatedLocationName(locationName)
         updateLocation(updatedLocation)

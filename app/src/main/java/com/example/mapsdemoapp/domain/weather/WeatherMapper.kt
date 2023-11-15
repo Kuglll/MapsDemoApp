@@ -20,6 +20,31 @@ import com.example.mapsdemoapp.domain.weather.models.WeatherResponseEntity
 import com.example.mapsdemoapp.domain.weather.models.WindEntity
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.math.roundToInt
+
+typealias Weather = com.example.mapsdemoapp.domain.weather.models.Weather
+
+fun WeatherResponseEntity.toWeather() = Weather(
+    temperature = this.main.temperature.roundToInt(),
+    minTemperature = this.main.minTemperature.roundToInt(),
+    maxTemperature = this.main.maxTemperature.roundToInt(),
+    rainAmount = this.rain?.volumeOneHour,
+    pressure = this.main.pressure,
+    humidity = this.main.humidity,
+    windSpeed = this.wind.speed.roundToInt(),
+    lastFetchedTime = this.timestamp,
+)
+
+fun WeatherResponse.toWeather() = Weather(
+    temperature = this.main.temperature.roundToInt(),
+    minTemperature = this.main.minTemperature.roundToInt(),
+    maxTemperature = this.main.maxTemperature.roundToInt(),
+    rainAmount = this.rain?.volumeOneHour,
+    pressure = this.main.pressure,
+    humidity = this.main.humidity,
+    windSpeed = this.wind.speed.roundToInt(),
+    lastFetchedTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")),
+)
 
 fun WeatherResponse.toWeatherResponseEntity(
     locationId: Int,

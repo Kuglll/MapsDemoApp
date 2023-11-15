@@ -59,17 +59,17 @@ fun ForecastScreen(
                     color = MaterialTheme.colors.primary,
                     fontWeight = FontWeight.Bold,
                 )
-                Text(text = "14.482543, 46.036905")
+                Text(text = "${state.latutide}, ${state.longitude}")
                 Spacer(modifier = Modifier.height(16.dp))
                 WeatherCard(
-                    currentTemperature = "11°",
-                    minTemperature = "4°",
-                    maxTemperature = "13°",
-                    precipitation = "3.16 mm/h",
-                    airPressure = "1015 hPa",
-                    humidity = "65%",
-                    windSpeed = "13 m/s",
-                    lastFetchedInfo = "Last fetched: 14:25 13.11.2023",
+                    currentTemperature = state.temperature.toString(), //11°
+                    minTemperature = state.minTemperature.toString(),
+                    maxTemperature = state.maxTemperature.toString(),
+                    precipitation = state.rainAmount.toString(), //3.16 mm/h
+                    airPressure = state.pressure.toString(), //1015 hPa
+                    humidity = state.humidity.toString(), //65%
+                    windSpeed = state.windSpeed.toString(), //13 m/s
+                    lastFetchedInfo = state.lastFetchedTime, //Last fetched: 14:25 13.11.2023
                 )
             }
         }
