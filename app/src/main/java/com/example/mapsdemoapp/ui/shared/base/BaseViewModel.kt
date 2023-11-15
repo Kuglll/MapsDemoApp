@@ -57,7 +57,6 @@ abstract class BaseViewModel<State : Any, Event : Any>(val initialState: State) 
         }
     }
 
-    //TODO: Remove if events are not needed
     protected fun postEvent(event: Event) {
         eventsFlow.trySend(event)
     }
