@@ -8,31 +8,34 @@ import com.example.mapsdemoapp.ui.shared.di.LocationParameter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 @HiltViewModel
 class ForecastViewModel @Inject constructor(
     @LocationParameter private val locationId: Int,
-    locationRepository: LocationRepository,
-    weatherRepository: WeatherRepository,
-) : BaseViewModel<ForecastState, Nothing>(ForecastState(
-    temperature = 0,
-    minTemperature = 0,
-    maxTemperature = 0,
-    humidity = 0,
-    windSpeed = 0,
-    lastFetchedTime = "",
-    pressure = 0,
-    locationName = "",
-    latutide = 0.0,
-    longitude = 0.0 //TODO: Remove this initial state
-)) {
+    private val locationRepository: LocationRepository,
+    private val weatherRepository: WeatherRepository,
+) : BaseViewModel<ForecastState, Nothing>(
+    ForecastState(
+        temperature = 0,
+        minTemperature = 0,
+        maxTemperature = 0,
+        humidity = 0,
+        windSpeed = 0,
+        lastFetchedTime = "",
+        pressure = 0,
+        locationName = "",
+        latutide = 0.0,
+        longitude = 0.0 //TODO: Remove this initial state
+    )
+) {
 
     init {
-        locationRepository.getLocationById(locationId).map {
-            it
-        }.onEach { location ->
+        fetchLocationById()
+    }
+
+    private fun fetchLocationById(){
+        locationRepository.getLocationById(locationId).onEach { location ->
             updateState { state ->
                 state.copy(
                     locationName = location.locationName ?: "No data",
@@ -41,20 +44,24 @@ class ForecastViewModel @Inject constructor(
                 )
             }
             location.locationName?.let {
-                weatherRepository.getWeatherByCityName(it, locationId).onEach { weather ->
-                    updateState { state ->
-                        state.copy(
-                            temperature = weather.temperature,
-                            minTemperature = weather.minTemperature,
-                            maxTemperature = weather.maxTemperature,
-                            rainAmount = weather.rainAmount,
-                            pressure = weather.pressure,
-                            humidity = weather.humidity,
-                            windSpeed = weather.windSpeed,
-                            lastFetchedTime = weather.lastFetchedTime,
-                        )
-                    }
-                }.launchIn(viewModelScope)
+                fetchWeatherData(it)
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private suspend fun fetchWeatherData(locationName: String){
+        weatherRepository.getWeatherByCityName(locationName, locationId).onEach { weather ->
+            updateState { state ->
+                state.copy(
+                    temperature = weather.temperature,
+                    minTemperature = weather.minTemperature,
+                    maxTemperature = weather.maxTemperature,
+                    rainAmount = weather.rainAmount,
+                    pressure = weather.pressure,
+                    humidity = weather.humidity,
+                    windSpeed = weather.windSpeed,
+                    lastFetchedTime = weather.lastFetchedTime,
+                )
             }
         }.launchIn(viewModelScope)
     }
