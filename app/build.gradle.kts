@@ -103,5 +103,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
     implementation("com.squareup.okhttp3:okhttp:3.6.0")
 
+    //Gson
+    implementation("com.google.code.gson:gson:2.10.1")
 
 }
