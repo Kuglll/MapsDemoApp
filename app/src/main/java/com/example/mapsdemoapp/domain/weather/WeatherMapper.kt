@@ -18,6 +18,8 @@ import com.example.mapsdemoapp.domain.weather.models.SysEntity
 import com.example.mapsdemoapp.domain.weather.models.WeatherEntity
 import com.example.mapsdemoapp.domain.weather.models.WeatherResponseEntity
 import com.example.mapsdemoapp.domain.weather.models.WindEntity
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 fun WeatherResponse.toWeatherResponseEntity(
     locationId: Int,
@@ -38,6 +40,7 @@ fun WeatherResponse.toWeatherResponseEntity(
     weatherResponseId = this.id,
     name = this.name,
     cod = this.cod,
+    timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")),
 )
 
 fun Coordinates.toCoordinatesEntity() = CoordinatesEntity(

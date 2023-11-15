@@ -36,6 +36,7 @@ data class WeatherResponseEntity(
     val weatherResponseId: Int? = null,
     val name: String? = null,
     val cod: Int,
+    val timestamp: String,
 )
 
 @Entity(tableName = "coordinates")
