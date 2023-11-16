@@ -2,6 +2,8 @@ package com.example.mapsdemoapp.repositories.di
 
 import com.example.mapsdemoapp.repositories.LocationRepository
 import com.example.mapsdemoapp.repositories.LocationRepositoryImpl
+import com.example.mapsdemoapp.repositories.UserSettingsRepository
+import com.example.mapsdemoapp.repositories.UserSettingsRepositoryImpl
 import com.example.mapsdemoapp.repositories.WeatherRepository
 import com.example.mapsdemoapp.repositories.WeatherRepositoryImpl
 import dagger.Binds
@@ -22,5 +24,10 @@ abstract class RepositoryModule {
     abstract fun bindWeatherRepository(
         weatherRepositoryImpl: WeatherRepositoryImpl
     ) : WeatherRepository
+
+    @Binds
+    abstract fun bindUserSettingsRepository(
+        userSettingsRepositoryImpl: UserSettingsRepositoryImpl
+    ) : UserSettingsRepository
 
 }

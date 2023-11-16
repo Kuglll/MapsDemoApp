@@ -3,6 +3,7 @@ package com.example.mapsdemoapp.ui.map
 import androidx.lifecycle.viewModelScope
 import com.example.mapsdemoapp.domain.location.models.Location
 import com.example.mapsdemoapp.repositories.LocationRepository
+import com.example.mapsdemoapp.repositories.UserSettingsRepository
 import com.example.mapsdemoapp.ui.shared.base.BaseViewModel
 import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.map
 @HiltViewModel
 class MapViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
+    private val userSettingsRepository: UserSettingsRepository,
 ) : BaseViewModel<MapState, MapEvent>(MapState()) {
 
     init {
@@ -26,6 +28,18 @@ class MapViewModel @Inject constructor(
         }.catch {
             showError(it.message)
         }.launchIn(viewModelScope)
+
+        getPreferredMapStyle()
+    }
+
+    private fun getPreferredMapStyle(){
+        launchWithLoading {
+
+            val preferredMapStyle = userSettingsRepository.getPreferredMapStyle()
+            updateState { state ->
+                state.copy(currentMapStyle = preferredMapStyle)
+            }
+        }
     }
 
     fun onLongPress(point: Point) {
@@ -35,19 +49,26 @@ class MapViewModel @Inject constructor(
     }
 
     fun onToggleMapTypeClicked() {
-        //TODO: Store selected map style to persistent storage
         when (state.value.currentMapStyle) {
             Style.OUTDOORS -> {
                 updateState { state ->
                     state.copy(currentMapStyle = Style.SATELLITE_STREETS)
                 }
+                storeMapTypePreference(Style.SATELLITE_STREETS)
             }
 
             Style.SATELLITE_STREETS -> {
                 updateState { state ->
                     state.copy(currentMapStyle = Style.OUTDOORS)
                 }
+                storeMapTypePreference(Style.OUTDOORS)
             }
+        }
+    }
+
+    private fun storeMapTypePreference(mapType: String){
+        launch {
+            userSettingsRepository.storePreferredMapStyle(mapType)
         }
     }
 
