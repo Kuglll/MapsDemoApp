@@ -29,3 +29,6 @@ open_weather_api_key=YOUR_OPEN_WEATHER_API_KEY_HERE
 - Coroutines
 - Flow
 - DataStore
+
+![](screens/map.png)
+![](screens/weather.png)
