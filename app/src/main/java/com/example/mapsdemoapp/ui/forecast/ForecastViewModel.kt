@@ -7,6 +7,7 @@ import com.example.mapsdemoapp.ui.shared.base.BaseViewModel
 import com.example.mapsdemoapp.ui.shared.di.LocationParameter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -34,7 +35,7 @@ class ForecastViewModel @Inject constructor(
         fetchLocationById()
     }
 
-    private fun fetchLocationById(){
+    private fun fetchLocationById() {
         locationRepository.getLocationById(locationId).onEach { location ->
             updateState { state ->
                 state.copy(
@@ -46,10 +47,13 @@ class ForecastViewModel @Inject constructor(
             location.locationName?.let {
                 fetchWeatherData(it)
             }
+        }.catch {
+            showError(it.message)
         }.launchIn(viewModelScope)
+
     }
 
-    private suspend fun fetchWeatherData(locationName: String){
+    private suspend fun fetchWeatherData(locationName: String) {
         weatherRepository.getWeatherByCityName(locationName, locationId).onEach { weather ->
             updateState { state ->
                 state.copy(
@@ -63,6 +67,8 @@ class ForecastViewModel @Inject constructor(
                     lastFetchedTime = weather.lastFetchedTime,
                 )
             }
+        }.catch {
+            showError(it.message)
         }.launchIn(viewModelScope)
     }
 

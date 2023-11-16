@@ -8,6 +8,7 @@ import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -22,6 +23,8 @@ class MapViewModel @Inject constructor(
             updateState { state ->
                 state.copy(savedLocations = it)
             }
+        }.catch {
+            showError(it.message)
         }.launchIn(viewModelScope)
     }
 
