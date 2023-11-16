@@ -63,6 +63,7 @@ fun MapComponent(
         },
         update = { mapView ->
             mapView.getMapboxMap().loadStyleUri(currentMapStyle)
+            pointAnnotationManager?.deleteAll()
             pointAnnotationManager?.create(
                 savedLocations.map { location ->
                     PointAnnotationOptions()
