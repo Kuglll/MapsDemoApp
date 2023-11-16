@@ -20,6 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.mapsdemoapp.R
 
@@ -127,4 +128,32 @@ private fun SmallTemperatureItem(
         text = "$temperatureValue°",
         style = MaterialTheme.typography.h6,
     )
+}
+
+@Preview
+@Composable
+fun WeatherCardPreview() {
+    WeatherCard(
+        currentTemperature = "20",
+        minTemperature = "15",
+        maxTemperature = "25",
+        precipitation = "0.5",
+        airPressure = "1000",
+        humidity = "50",
+        windSpeed = "10",
+        iconId = R.drawable.ic_01d,
+        lastFetchedInfo = "10:00",
+    )
+}
+
+@Preview
+@Composable
+fun BigTemperatureItemPreview() {
+    BigTemperatureItem(temperatureValue = "20")
+}
+
+@Preview
+@Composable
+fun SmallTemperatureItemPreview() {
+    SmallTemperatureItem(temperatureValue = "20")
 }

@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 
 private val darkGreen = Color(0xff3c5621)
 
-val Colors = lightColors(
+val MapsColors = lightColors(
     primary = darkGreen,
     onPrimary = Color.White,
 )

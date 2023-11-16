@@ -1,6 +1,5 @@
 package com.example.mapsdemoapp.ui.shared
 
-
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.mapsdemoapp.R
 
@@ -148,3 +148,27 @@ fun ErrorDialog(
     modifier = modifier,
     onDismissRequest = onDismissRequest,
 )
+
+@Preview
+@Composable
+fun ErrorDialogPreview() {
+    ErrorDialog(
+        title = "Error",
+        description = "Something went wrong",
+        onConfirmClick = {},
+        onDismissRequest = {},
+    )
+}
+
+@Preview
+@Composable
+fun DialogPreview() {
+    Dialog(
+        title = "Exit",
+        description = "Do you really want to exit?",
+        dismissText = "Cancel",
+        confirmText = "Confirm",
+        onConfirmClick = {},
+        onDismissRequest = {},
+    )
+}
