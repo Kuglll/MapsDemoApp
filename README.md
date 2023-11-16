@@ -30,5 +30,5 @@ open_weather_api_key=YOUR_OPEN_WEATHER_API_KEY_HERE
 - Flow
 - DataStore
 
-![](screens/map.png)
-![](screens/weather.png)
+[<img src="screens/map.png" width="250"/>](screens/map.png)
+[<img src="screens/weather.png" width="250"/>](screens/weather.png)
