@@ -25,6 +25,8 @@ import kotlin.math.roundToInt
 
 typealias WeatherDomain = com.example.mapsdemoapp.domain.weather.models.Weather
 
+val LAST_FETCHED_TIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")
+
 fun WeatherResponseEntity.toWeather() = WeatherDomain(
     temperature = this.main.temperature.roundToInt(),
     minTemperature = this.main.minTemperature.roundToInt(),
@@ -46,7 +48,7 @@ fun WeatherResponse.toWeather() = WeatherDomain(
     humidity = this.main.humidity,
     windSpeed = this.wind.speed.roundToInt(),
     iconId = this.weather[0].icon.toIconId(),
-    lastFetchedTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")),
+    lastFetchedTime = LocalDateTime.now().format(LAST_FETCHED_TIME_FORMATTER),
 )
 
 fun String.toIconId() = when (this) {
@@ -84,7 +86,7 @@ fun WeatherResponse.toWeatherResponseEntity(
     weatherResponseId = this.id,
     name = this.name,
     cod = this.cod,
-    timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")),
+    timestamp = LocalDateTime.now().format(LAST_FETCHED_TIME_FORMATTER),
 )
 
 fun Coordinates.toCoordinatesEntity() = CoordinatesEntity(
