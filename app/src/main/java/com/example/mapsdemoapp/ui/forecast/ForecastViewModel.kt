@@ -5,6 +5,7 @@ import com.example.mapsdemoapp.repositories.LocationRepository
 import com.example.mapsdemoapp.repositories.WeatherRepository
 import com.example.mapsdemoapp.ui.shared.base.BaseViewModel
 import com.example.mapsdemoapp.ui.shared.di.LocationParameter
+import com.example.mapsdemoapp.utils.extensions.limitDecimals
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
@@ -27,8 +28,8 @@ class ForecastViewModel @Inject constructor(
             updateState { state ->
                 state.copy(
                     locationName = location.locationName ?: "No data",
-                    latutide = location.latitude,
-                    longitude = location.longitude,
+                    latutide = location.latitude.limitDecimals(),
+                    longitude = location.longitude.limitDecimals(),
                 )
             }
             location.locationName?.let {
