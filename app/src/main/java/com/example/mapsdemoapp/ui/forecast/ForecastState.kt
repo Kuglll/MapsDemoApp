@@ -11,6 +11,7 @@ data class ForecastState(
     val pressure: Int = 0,
     val humidity: Int = 0,
     val windSpeed: Int = 0,
+    val iconId: Int? = null,
     val lastFetchedTime: String = "",
 )
 

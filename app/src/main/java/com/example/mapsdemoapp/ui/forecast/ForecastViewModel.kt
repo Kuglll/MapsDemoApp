@@ -1,5 +1,6 @@
 package com.example.mapsdemoapp.ui.forecast
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.mapsdemoapp.repositories.LocationRepository
 import com.example.mapsdemoapp.repositories.WeatherRepository
@@ -51,6 +52,7 @@ class ForecastViewModel @Inject constructor(
                     pressure = weather.pressure,
                     humidity = weather.humidity,
                     windSpeed = weather.windSpeed,
+                    iconId = weather.iconId,
                     lastFetchedTime = weather.lastFetchedTime,
                 )
             }

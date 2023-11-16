@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,6 +32,7 @@ fun WeatherCard(
     airPressure: String,
     humidity: String,
     windSpeed: String,
+    iconId: Int?,
     lastFetchedInfo: String,
 ) {
     Card(
@@ -48,12 +50,11 @@ fun WeatherCard(
                     BigTemperatureItem(
                         temperatureValue = currentTemperature,
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    //TODO Handle icons
                     Image(
-                        painter = painterResource(id = R.drawable.ic_marker_blue),
+                        painter = painterResource(id = iconId ?: R.drawable.ic_01d),
                         contentDescription = stringResource(id = R.string.weather_image_content_description),
-                        modifier = Modifier.size(width = 200.dp, height = 100.dp),
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.defaultMinSize(minWidth = 130.dp),
                     )
                     Row(
                         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -106,8 +107,6 @@ fun WeatherCard(
         }
     }
 }
-
-
 
 @Composable
 private fun BigTemperatureItem(

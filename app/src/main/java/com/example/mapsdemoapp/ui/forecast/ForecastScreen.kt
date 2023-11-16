@@ -73,6 +73,7 @@ fun ForecastScreen(
                     airPressure = state.pressure.toString(),
                     humidity = state.humidity.toString(),
                     windSpeed = state.windSpeed.toString(),
+                    iconId = state.iconId,
                     lastFetchedInfo = state.lastFetchedTime,
                 )
             }

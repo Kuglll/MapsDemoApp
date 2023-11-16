@@ -1,5 +1,6 @@
 package com.example.mapsdemoapp.domain.weather
 
+import com.example.mapsdemoapp.R
 import com.example.mapsdemoapp.data.network.models.Clouds
 import com.example.mapsdemoapp.data.network.models.Coordinates
 import com.example.mapsdemoapp.data.network.models.Main
@@ -22,9 +23,9 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
-typealias Weather = com.example.mapsdemoapp.domain.weather.models.Weather
+typealias WeatherDomain = com.example.mapsdemoapp.domain.weather.models.Weather
 
-fun WeatherResponseEntity.toWeather() = Weather(
+fun WeatherResponseEntity.toWeather() = WeatherDomain(
     temperature = this.main.temperature.roundToInt(),
     minTemperature = this.main.minTemperature.roundToInt(),
     maxTemperature = this.main.maxTemperature.roundToInt(),
@@ -32,10 +33,11 @@ fun WeatherResponseEntity.toWeather() = Weather(
     pressure = this.main.pressure,
     humidity = this.main.humidity,
     windSpeed = this.wind.speed.roundToInt(),
+    iconId = this.weather[0].icon.toIconId(),
     lastFetchedTime = this.timestamp,
 )
 
-fun WeatherResponse.toWeather() = Weather(
+fun WeatherResponse.toWeather() = WeatherDomain(
     temperature = this.main.temperature.roundToInt(),
     minTemperature = this.main.minTemperature.roundToInt(),
     maxTemperature = this.main.maxTemperature.roundToInt(),
@@ -43,8 +45,25 @@ fun WeatherResponse.toWeather() = Weather(
     pressure = this.main.pressure,
     humidity = this.main.humidity,
     windSpeed = this.wind.speed.roundToInt(),
+    iconId = this.weather[0].icon.toIconId(),
     lastFetchedTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")),
 )
+
+fun String.toIconId() = when (this) {
+    "01d" -> R.drawable.ic_01d
+    "02d" -> R.drawable.ic_02d
+    "03d", "03n" -> R.drawable.ic_03d
+    "04d", "04n" -> R.drawable.ic_04d
+    "09d", "09n" -> R.drawable.ic_09d
+    "10d" -> R.drawable.ic_10d
+    "11d", "11n" -> R.drawable.ic_11d
+    "13d", "13n" -> R.drawable.ic_13d
+    "50d", "50n" -> R.drawable.ic_50d
+    "01n" -> R.drawable.ic_01n
+    "02n" -> R.drawable.ic_02n
+    "10n" -> R.drawable.ic_10n
+    else -> R.drawable.ic_01d
+}
 
 fun WeatherResponse.toWeatherResponseEntity(
     locationId: Int,

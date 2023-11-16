@@ -8,5 +8,6 @@ data class Weather(
     val pressure: Int,
     val humidity: Int,
     val windSpeed: Int,
+    val iconId: Int,
     val lastFetchedTime: String,
 )
