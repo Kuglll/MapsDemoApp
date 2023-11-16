@@ -10,6 +10,7 @@ import com.example.mapsdemoapp.domain.location.toLocationWithUpdatedLocationName
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -22,9 +23,11 @@ interface LocationRepository {
 
     fun getLocationIdByLatAndLng(location: Location): Flow<Int>
 
-    fun getLocationById(id: Int): Flow<Location>
+    fun getLocationById(locationId: Int): Flow<Location>
 
     fun getLocations(): Flow<List<Location>>
+
+    suspend fun deleteLocationById(locationId: Int): Int
 
 }
 
@@ -47,8 +50,8 @@ class LocationRepositoryImpl @Inject constructor(
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getLocationById(id: Int): Flow<Location> {
-        return locationDao.getLocationById(id).flatMapConcat { location ->
+    override fun getLocationById(locationId: Int): Flow<Location> {
+        return locationDao.getLocationById(locationId).filterNotNull().flatMapConcat { location ->
             if (location.locationName.isNullOrEmpty()) {
                 fetchAndStoreLocationName(location)
                 flowOf()
@@ -70,12 +73,12 @@ class LocationRepositoryImpl @Inject constructor(
     private suspend fun fetchLocationName(
         latitude: Double,
         longitude: Double,
-    ): String{
+    ): String {
         val place = nominatimService.getLocationNameByLatAndLng(
             latitude = latitude,
             longitude = longitude,
         )
-        if(place.address.city.isNotEmpty()){
+        if (place.address.city.isNotEmpty()) {
             return place.address.city
         }
         return place.address.village
@@ -87,5 +90,7 @@ class LocationRepositoryImpl @Inject constructor(
                 locationEntity.toLocation()
             }
         }
+
+    override suspend fun deleteLocationById(locationId: Int) = locationDao.deleteLocationById(locationId)
 
 }

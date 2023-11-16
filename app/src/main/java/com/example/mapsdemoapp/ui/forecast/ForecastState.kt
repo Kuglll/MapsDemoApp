@@ -13,3 +13,7 @@ data class ForecastState(
     val windSpeed: Int = 0,
     val lastFetchedTime: String = "",
 )
+
+sealed interface ForecastEvent {
+    object LocationDeletedSuccessfully : ForecastEvent
+}

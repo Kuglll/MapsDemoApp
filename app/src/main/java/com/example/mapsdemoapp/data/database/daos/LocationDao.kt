@@ -1,6 +1,7 @@
 package com.example.mapsdemoapp.data.database.daos
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -24,5 +25,8 @@ interface LocationDao {
 
     @Query("SELECT * FROM locations WHERE id=:id")
     fun getLocationById(id: Int): Flow<LocationEntity>
+
+    @Query("DELETE FROM locations WHERE id=:locationId")
+    fun deleteLocationById(locationId: Int): Int
 
 }

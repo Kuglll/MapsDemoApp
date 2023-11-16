@@ -17,7 +17,7 @@ class ForecastViewModel @Inject constructor(
     @LocationParameter private val locationId: Int,
     private val locationRepository: LocationRepository,
     private val weatherRepository: WeatherRepository,
-) : BaseViewModel<ForecastState, Nothing>(ForecastState()) {
+) : BaseViewModel<ForecastState, ForecastEvent>(ForecastState()) {
 
     init {
         fetchLocationById()
@@ -38,7 +38,6 @@ class ForecastViewModel @Inject constructor(
         }.catch {
             showError(it.message)
         }.launchIn(viewModelScope)
-
     }
 
     private suspend fun fetchWeatherData(locationName: String) {
@@ -58,6 +57,15 @@ class ForecastViewModel @Inject constructor(
         }.catch {
             showError(it.message)
         }.launchIn(viewModelScope)
+    }
+
+    fun onDeleteLocationClicked() {
+        launchWithLoading {
+            val numberOfDeletedLocations = locationRepository.deleteLocationById(locationId)
+            if (numberOfDeletedLocations > 0) {
+                postEvent(ForecastEvent.LocationDeletedSuccessfully)
+            }
+        }
     }
 
 }

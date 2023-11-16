@@ -54,7 +54,8 @@ fun MapScreen(
             ) {
                 Text(
                     text = stringResource(id = R.string.toggle_map_type),
-                    color = Color.White
+                    color = Color.White,
+                    modifier = Modifier.padding(horizontal = 4.dp),
                 )
             }
         }

@@ -12,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -26,9 +27,19 @@ fun ForecastScreen(
     viewModel: ForecastViewModel = hiltViewModel(),
     onBackButtonClicked: () -> Unit,
 ) {
-    BaseComposable(viewModel = viewModel) { state ->
+    BaseComposable(
+        viewModel = viewModel,
+        eventsHandler = { event ->
+            when(event){
+                is ForecastEvent.LocationDeletedSuccessfully -> {
+                    onBackButtonClicked()
+                }
+            }
+        }
+    ) { state ->
         Column(
             modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             TopAppBar {
                 TextButton(
@@ -64,8 +75,21 @@ fun ForecastScreen(
                     windSpeed = state.windSpeed.toString(),
                     lastFetchedInfo = state.lastFetchedTime,
                 )
-                //TODO: Add delete location button
             }
+            Spacer(modifier = Modifier.weight(1f))
+            Button(
+                onClick = viewModel::onDeleteLocationClicked,
+                modifier = Modifier.padding(bottom = 16.dp),
+                shape = RoundedCornerShape(5.dp),
+                elevation = null,
+            ) {
+                Text(
+                    text = stringResource(id = R.string.delete_location),
+                    color = Color.White,
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                )
+            }
+
         }
     }
 }
