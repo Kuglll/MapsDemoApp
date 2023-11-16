@@ -1,6 +1,5 @@
 package com.example.mapsdemoapp.ui.forecast
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -62,15 +61,16 @@ fun ForecastScreen(
                 Text(text = "${state.latutide}, ${state.longitude}")
                 Spacer(modifier = Modifier.height(16.dp))
                 WeatherCard(
-                    currentTemperature = state.temperature.toString(), //11°
+                    currentTemperature = state.temperature.toString(),
                     minTemperature = state.minTemperature.toString(),
                     maxTemperature = state.maxTemperature.toString(),
-                    precipitation = state.rainAmount.toString(), //3.16 mm/h
-                    airPressure = state.pressure.toString(), //1015 hPa
-                    humidity = state.humidity.toString(), //65%
-                    windSpeed = state.windSpeed.toString(), //13 m/s
-                    lastFetchedInfo = state.lastFetchedTime, //Last fetched: 14:25 13.11.2023
+                    precipitation = state.rainAmount?.toString(),
+                    airPressure = state.pressure.toString(),
+                    humidity = state.humidity.toString(),
+                    windSpeed = state.windSpeed.toString(),
+                    lastFetchedInfo = state.lastFetchedTime,
                 )
+                //TODO: Add delete location button
             }
         }
     }
@@ -81,7 +81,7 @@ private fun WeatherCard(
     currentTemperature: String,
     minTemperature: String,
     maxTemperature: String,
-    precipitation: String,
+    precipitation: String?,
     airPressure: String,
     humidity: String,
     windSpeed: String,
@@ -99,10 +99,8 @@ private fun WeatherCard(
                     modifier = Modifier.weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Text(
-                        text = currentTemperature,
-                        style = MaterialTheme.typography.h3,
-                        fontWeight = FontWeight.ExtraBold,
+                    BigTemperatureItem(
+                        temperatureValue = currentTemperature,
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     //TODO Handle icons
@@ -115,14 +113,8 @@ private fun WeatherCard(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        Text(
-                            text = maxTemperature,
-                            style = MaterialTheme.typography.h6,
-                        )
-                        Text(
-                            text = minTemperature,
-                            style = MaterialTheme.typography.h6,
-                        )
+                        SmallTemperatureItem(temperatureValue = maxTemperature)
+                        SmallTemperatureItem(temperatureValue = minTemperature)
                     }
                 }
                 Column(
@@ -130,18 +122,38 @@ private fun WeatherCard(
                         .weight(1f)
                         .padding(start = 32.dp),
                 ) {
-                    WeatherInfoComponent(titleId = R.string.precipitation, value = precipitation)
+                    WeatherInfoComponentView(
+                        WeatherInfoComponent.Precipitation(
+                            titleId = R.string.precipitation,
+                            value = precipitation,
+                        )
+                    )
                     Spacer(modifier = Modifier.height(12.dp))
-                    WeatherInfoComponent(titleId = R.string.air_pressure, value = airPressure)
+                    WeatherInfoComponentView(
+                        WeatherInfoComponent.AirPressure(
+                            titleId = R.string.air_pressure,
+                            value = airPressure,
+                        )
+                    )
                     Spacer(modifier = Modifier.height(12.dp))
-                    WeatherInfoComponent(titleId = R.string.humidity, value = humidity)
+                    WeatherInfoComponentView(
+                        WeatherInfoComponent.Humidity(
+                            titleId = R.string.humidity,
+                            value = humidity,
+                        )
+                    )
                     Spacer(modifier = Modifier.height(12.dp))
-                    WeatherInfoComponent(titleId = R.string.wind_speed, value = windSpeed)
+                    WeatherInfoComponentView(
+                        WeatherInfoComponent.WindSpeed(
+                            titleId = R.string.wind_speed,
+                            value = windSpeed,
+                        )
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = lastFetchedInfo,
+                text = stringResource(id = R.string.last_fetched, lastFetchedInfo),
                 style = MaterialTheme.typography.caption,
                 color = Color.Gray,
             )
@@ -150,19 +162,22 @@ private fun WeatherCard(
 }
 
 @Composable
-private fun WeatherInfoComponent(
-    @StringRes titleId: Int,
-    value: String,
+private fun BigTemperatureItem(
+    temperatureValue: String,
 ) {
     Text(
-        text = stringResource(id = titleId),
-        style = MaterialTheme.typography.body2,
-        color = Color.Gray,
+        text = "$temperatureValue°",
+        style = MaterialTheme.typography.h3,
+        fontWeight = FontWeight.ExtraBold,
     )
-    Spacer(modifier = Modifier.height(4.dp))
+}
+
+@Composable
+private fun SmallTemperatureItem(
+    temperatureValue: String,
+) {
     Text(
-        text = value,
-        style = MaterialTheme.typography.body1,
-        fontWeight = FontWeight.SemiBold,
+        text = "$temperatureValue°",
+        style = MaterialTheme.typography.h6,
     )
 }

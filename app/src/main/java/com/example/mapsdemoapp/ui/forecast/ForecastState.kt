@@ -2,14 +2,14 @@ package com.example.mapsdemoapp.ui.forecast
 
 data class ForecastState(
     val locationName: String = "",
-    val latutide: Double, //TODO: Round this to 6 decimals
-    val longitude: Double,
-    val temperature: Int,
-    val minTemperature: Int,
-    val maxTemperature: Int,
+    val latutide: Double = 0.0, //TODO: Round this to 6 decimals
+    val longitude: Double = 0.0,
+    val temperature: Int = 0,
+    val minTemperature: Int = 0,
+    val maxTemperature: Int = 0,
     val rainAmount: Double? = null,
-    val pressure: Int,
-    val humidity: Int,
-    val windSpeed: Int,
-    val lastFetchedTime: String,
+    val pressure: Int = 0,
+    val humidity: Int = 0,
+    val windSpeed: Int = 0,
+    val lastFetchedTime: String = "",
 )

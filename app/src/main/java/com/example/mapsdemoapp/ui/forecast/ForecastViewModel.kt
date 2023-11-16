@@ -16,20 +16,7 @@ class ForecastViewModel @Inject constructor(
     @LocationParameter private val locationId: Int,
     private val locationRepository: LocationRepository,
     private val weatherRepository: WeatherRepository,
-) : BaseViewModel<ForecastState, Nothing>(
-    ForecastState(
-        temperature = 0,
-        minTemperature = 0,
-        maxTemperature = 0,
-        humidity = 0,
-        windSpeed = 0,
-        lastFetchedTime = "",
-        pressure = 0,
-        locationName = "",
-        latutide = 0.0,
-        longitude = 0.0 //TODO: Remove this initial state
-    )
-) {
+) : BaseViewModel<ForecastState, Nothing>(ForecastState()) {
 
     init {
         fetchLocationById()
